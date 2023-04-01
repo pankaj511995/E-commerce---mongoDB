@@ -2,12 +2,19 @@ const path = require('path');
 require('dotenv').config()
 const {mongoClient}=require('./util/mongo')
 const express = require('express');
+const User=require('./models/User')
 const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
 
 const app = express();
-
+app.use((req,res,next)=>{
+const user=new User()
+    user.findUser('64281662241487bb81e8c753').then(user=>{
+        req.user=user
+        next()
+    })
+})
 app.set('view engine', 'ejs'); 
 app.set('views', 'views'); 
 
