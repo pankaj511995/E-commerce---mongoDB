@@ -1,5 +1,5 @@
 const Product = require('../models/product');
-
+const User=require('../models/User')
 exports.getProducts = (req, res, next) => {
   const product=new Product()
   product.fetchAll().then(products => {
@@ -51,4 +51,16 @@ exports.productDetails=(req,res)=>{
       pageTitle: 'Checkout'
     });
   })
+}
+exports.addcart=(req,res)=>{
+  const product=new Product()
+  product.findById(req.body.productId).then(product=>{
+     req.user.addToCart(product)
+     
+    //  .then(result=>{
+    //   console.log(result,'cart item is added controller')
+    //  })
+    res.redirect('/products')
+  })
+
 }

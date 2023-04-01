@@ -1,11 +1,12 @@
 const {getDB}=require('../util/mongo')
 const mongodb=require('mongodb')
 module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
+  constructor(title, imageUrl, description, price,userId) {
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
     this.price = price;
+    this.userId=userId
   }
 
   save(id) {
@@ -22,12 +23,11 @@ module.exports = class Product {
   const db=getDB()
   return db.collection('products').deleteOne({_id:new mongodb.ObjectId(id)})
  }
-
   fetchAll(){
     const db=getDB()
   return db.collection('products').find().toArray()
 }
-findById(proid){
+ findById(proid){
   const db=getDB()
  return db.collection('products').find({_id:new mongodb.ObjectId(proid)}).next().then(product=>{
     return product

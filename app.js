@@ -11,8 +11,8 @@ const app = express();
 app.use((req,res,next)=>{
 const user=new User()
     user.findUser('64281662241487bb81e8c753').then(user=>{
-        req.user=user
-        next()
+        req.user=new User(user.name,user.email,user.cart,user._id) 
+        next() 
     })
 })
 app.set('view engine', 'ejs'); 
