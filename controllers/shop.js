@@ -23,10 +23,18 @@ exports.getIndex = (req, res, next) => {
 }; 
 
 exports.getCart = (req, res, next) => {
-  res.render('shop/cart', {
+  const product=new Product()
+  const cartitem=[]
+  req.user.cart.forEach(e=>cartitem.push(e.productid))    
+  req.user.findmany(cartitem).then(product=>{
+    res.render('shop/cart', { 
     path: '/cart',
+  prods:product,
     pageTitle: 'Your Cart'
   });
+  })
+
+  
 };
 
 exports.getOrders = (req, res, next) => {
@@ -55,12 +63,14 @@ exports.productDetails=(req,res)=>{
 exports.addcart=(req,res)=>{
   const product=new Product()
   product.findById(req.body.productId).then(product=>{
-     req.user.addToCart(product)
-     
-    //  .then(result=>{
-    //   console.log(result,'cart item is added controller')
-    //  })
-    res.redirect('/products')
+     req.user.addToCart(product).then(result=>{
+      res.redirect('/cart')
+     })
+    })
+}
+exports.deletecart=(req,res)=>{
+  req.user.delete(req.params.id)
+  .then(()=>{
+    res.redirect('/cart')
   })
-
 }

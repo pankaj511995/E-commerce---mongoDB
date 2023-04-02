@@ -36,9 +36,24 @@ findUser(id){
     }else{
           cart=[{productid:product._id,quantity:1}]
           }
-    db.collection('users').updateOne({_id:new mongodb.ObjectId(this._id)},{$set:{cart:cart}})
-    console.log(this.cart)
+    return db.collection('users').updateOne({_id:new mongodb.ObjectId(this._id)},{$set:{cart:cart}})
+    
   
+  }
+  delete(id){
+   const car= this.cart.filter(e=>e.productid.toString()!=id.toString())
+   const db=getDB()
+    return db.collection('users').updateOne({_id:new mongodb.ObjectId(this._id)},{$set:{cart:car}})
+  }
+  findmany(arr){
+    const db=getDB()
+    return  db.collection('products').find({_id:{$in:arr}}).toArray().then(product=>{
+      return product.map(p=>{return {...p,quantity:this.cart.find(i=>{
+        return i.productid.toString()===p._id.toString()
+      }).quantity
+    }
+  })
+    })
   }
 };
  

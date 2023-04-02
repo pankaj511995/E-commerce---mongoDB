@@ -33,5 +33,6 @@ module.exports = class Product {
     return product
   }).catch(err=>console.log('got error while finding id',err))
   }
+ 
 };
  
