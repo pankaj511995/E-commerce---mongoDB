@@ -1,6 +1,6 @@
 const Product = require('../models/product_mongooes');
-const User=require('../models/User')
-const Order=require('../models/order')
+const Order=require('../models/order_mongooes')
+const User=require('../models/user_mongooes')
 exports.getProducts = async(req, res, next) => {
   try{
     const products=await Product.find()
@@ -29,51 +29,41 @@ exports.getIndex =async (req, res, next) => {
 }; 
 
 exports.getCart = async(req, res, next) => {
-  let cartitem=req.user.cart.map(e=>e.productid)
-  const product=await Product.find({_id:{$in:cartitem}})
-    const prod=product.map(cart=>{
-      // console.log({...pro})
-      return{cart,
-      quantity:req.user.cart.find(e=>cart._id.toString()===e.productid.toString()).quantity}
-  })
-  console.log(prod)
-  // req.user.cart.forEach(e=>cartitem.push(e.productid))    
-  // req.user.findmany(cartitem).then(product=>{
-    res.render('shop/cart', { 
-    path: '/cart',
-  prods:prod,
-    pageTitle: 'Your Cart'
-  });
-  // })
-
-  
+  try{
+     const prod=await getproduct(req)
+        res.render('shop/cart', { 
+        path: '/cart',
+      prods:prod,
+        pageTitle: 'Your Cart'
+      }); 
+}catch(err){
+  console.log('error gating cart')
+}
 };
 
-exports.getOrders = (req, res, next) => {
-  const order=new Order()
-  order.getorder(req.user._id)
-  .then(product=>{
+exports.getOrders = async(req, res, next) => {
+  try{
+    const order=await Order.find({userId:req.user._id})
     res.render('shop/orders', {
       path: '/orders',
       pageTitle: 'Your Orders',
-    prods:product
+    prods:order
     });
-    
-  })
+}catch(err){
+  console.log('error while gaating all oreder details')
+}
   
 };
 
-exports.getCheckout = (req, res, next) => {
-  const cartitem=[]
-  req.user.cart.forEach(e=>cartitem.push(e.productid))    
-  req.user.findmany(cartitem).then(product=>{
-    const order=new Order(req.user._id,product)
-    return order.orderdetails()
-  })
-  .then(order=>{
-    return req.user.emptycart()
-    
-  }).then((cart)=>res.redirect('/orders'))
+exports.getCheckout = async(req, res, next) => {
+  try{
+    const product=await getproduct(req)
+    await Order.create({userId:req.user._id,product:product})
+    await User.updateOne({_id:req.user._id},{cart:[]})
+  res.redirect('/orders')
+  }catch(err){
+    console.log('err to get order')
+  }
 };
 
 
@@ -111,9 +101,24 @@ exports.addcart=async(req,res)=>{
   console.log('error while adding to cart')
 }
 }
-exports.deletecart=(req,res)=>{
-  req.user.delete(req.params.id)
-  .then(()=>{
+exports.deletecart=async(req,res)=>{
+  try{
+  const cart=req.user.cart.filter(e=>e.productid.toString()!=req.params.id)
+  await User.updateOne({_id:req.user._id},{cart:cart})
     res.redirect('/cart')
+  }catch(err){
+    console.log('error while deleting cart item')
+  }
+}
+
+function getproduct(req){
+  return new Promise(async(resolve,reject)=>{
+    let cartitem=req.user.cart.map(e=>e.productid)
+    const product=await Product.find({_id:{$in:cartitem}})
+      const prod=product.map(cart=>{
+        return{cart,
+        quantity:req.user.cart.find(e=>cart._id.toString()===e.productid.toString()).quantity}
+              })
+              resolve(prod)
   })
 }
