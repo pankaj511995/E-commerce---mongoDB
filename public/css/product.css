@@ -47,3 +47,18 @@
     font-size: x-large;
    
 }
+.order{
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    text-decoration: none;
+    font: inherit;
+    border: 1px solid #f4f4ef;
+    color: #fcfffc;
+    background: rgba(10, 236, 14, 0.991);
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    font-size: x-large;
+   
+}

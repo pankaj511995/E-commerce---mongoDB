@@ -45,6 +45,13 @@ findUser(id){
    const db=getDB()
     return db.collection('users').updateOne({_id:new mongodb.ObjectId(this._id)},{$set:{cart:car}})
   }
+emptycart(){
+  const db=getDB()
+    return db.collection('users').updateOne({_id:new mongodb.ObjectId(this._id)},{$set:{cart:[]}})
+  
+}
+
+
   findmany(arr){
     const db=getDB()
     return  db.collection('products').find({_id:{$in:arr}}).toArray().then(product=>{

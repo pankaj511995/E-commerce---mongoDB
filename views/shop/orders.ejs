@@ -1,9 +1,55 @@
 <%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
     </head>
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-        <main>
-            <h1>Nothing there!</h1>
-        </main>
-        <%- include('../includes/end.ejs') %>
+
+            <main>
+               <input type="hidden" value="<%= Total=0 %>"> 
+                <% if (prods.length > 0) { %>
+                    <div class="grid">
+                        <% prods.forEach(prod=> { %>
+                           <div class="order"> product id is#:<%= prod._id %></div>
+                           <% prod.product.forEach(products=> { %>
+                            <article class="card product-item">
+                                <header class="card__header">
+                                    <h1 class="product__title">
+                                        <%= products.title %>
+                                    </h1>
+                                </header>
+                                <div class="card__image">
+                                    <img src="<%= products.imageUrl %>" alt="">
+                                </div>
+                                <div class="card__content">
+                                    <h2 class="product__price">$
+                                        <%= products.price %>
+                                    </h2>
+                                    <p class="product__description">
+                                        <%= products.description %>
+                                    </p>
+                                </div>
+                                <div class="card__actions">
+                                    
+                                    
+                                    </div>                             
+                                   
+                                    
+                                   
+                                </div>
+                               
+                            </article>
+                            <% }) %>
+                            <% }) %>
+                    </div>
+                    <% } else { %>
+                        <h1>No Products Found!</h1>
+                        <% } %>
+                        
+                       
+            </main>
+            <footer >
+                
+                
+            </footer>
+            <%- include('../includes/end.ejs') %>
