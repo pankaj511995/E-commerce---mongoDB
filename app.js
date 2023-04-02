@@ -7,8 +7,7 @@ const User=require('./models/user_mongooes')
 const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
-mongoose.connect(process.env.URL_MONGO).then(()=>console.log('connected'))
-.catch(err=>console.log(err,'got error while connecting'))
+
 const app = express(); 
 app.use((req,res,next)=>{ 
      User.findOne({_id:'642989ded3f219b27ab5b4f7'}).then(user=>{
@@ -31,9 +30,13 @@ app.use(shopRoutes);
  
 app.use(errorController.get404);
 
-mongoClient(client=>{
-    console.log(client)
+mongoose.connect(process.env.URL_MONGO).then(()=>{
     app.listen(3000);
-})
+    console.log('connected')})
+.catch(err=>console.log(err,'got error while connecting'))
+// mongoClient(client=>{
+//     console.log(client)
+//     app.listen(3000);
+// })
 
  

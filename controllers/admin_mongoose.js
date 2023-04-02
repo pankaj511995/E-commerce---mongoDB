@@ -1,4 +1,4 @@
-const Product = require('../models/product_mongood');
+const Product = require('../models/product_mongooes');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
@@ -27,6 +27,9 @@ exports.postAddProduct = async(req, res, next) => {
 exports.getProducts = async(req, res, next) => {
     try{
       const products=await Product.find()
+      // .select(['title','price'])for selecting perticular item
+      // .select("title price description")
+     
       res.render('admin/products', {
       prods: products,
       pageTitle: 'Admin Products',
@@ -35,6 +38,7 @@ exports.getProducts = async(req, res, next) => {
   }catch(err){
     console.log('error while fetching all data')
   }
+  
 };
 exports.editAddProduct = async(req, res, next) => {
 try{
