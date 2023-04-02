@@ -28,16 +28,22 @@ exports.getIndex =async (req, res, next) => {
 }
 }; 
 
-exports.getCart = (req, res, next) => {
-  let cartitem=req.user.cart
-  console.log(cartitem)
+exports.getCart = async(req, res, next) => {
+  let cartitem=req.user.cart.map(e=>e.productid)
+  const product=await Product.find({_id:{$in:cartitem}})
+    const prod=product.map(cart=>{
+      // console.log({...pro})
+      return{cart,
+      quantity:req.user.cart.find(e=>cart._id.toString()===e.productid.toString()).quantity}
+  })
+  console.log(prod)
   // req.user.cart.forEach(e=>cartitem.push(e.productid))    
   // req.user.findmany(cartitem).then(product=>{
-  //   res.render('shop/cart', { 
-  //   path: '/cart',
-  // prods:product,
-  //   pageTitle: 'Your Cart'
-  // });
+    res.render('shop/cart', { 
+    path: '/cart',
+  prods:prod,
+    pageTitle: 'Your Cart'
+  });
   // })
 
   
