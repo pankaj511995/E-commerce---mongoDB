@@ -1,14 +1,16 @@
 const path = require('path');
 require('dotenv').config()
+const mongoose=require('mongoose')
 const {mongoClient}=require('./util/mongo')
 const express = require('express');
 const User=require('./models/User')
 const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
-
-const app = express();
-app.use((req,res,next)=>{
+mongoose.connect(process.env.URL_MONGO).then(()=>console.log('connected'))
+.catch(err=>console.log(err,'got error while connecting'))
+const app = express(); 
+app.use((req,res,next)=>{ 
 const user=new User()
     user.findUser('64281662241487bb81e8c753').then(user=>{
         req.user=new User(user.name,user.email,user.cart,user._id) 
