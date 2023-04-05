@@ -11,8 +11,10 @@
                     
                         <% prods.forEach(prod=> { %>
                            <div class="order"> Order id is#:<%= prod._id %></div>
-                           <% prod.product.forEach(products=> { %>
                         <div class="grid">
+                           <% prod.product.forEach(products=> { %>
+                      
+                            
                             <article class="card product-item">
                                 <header class="card__header">
                                     <h1 class="product__title">
@@ -31,13 +33,14 @@
                                     </p>
                                 </div>
                                 <div class="card__actions">
-                                    
+                                    <div class="btn"> Quantity : <%= products.quantity %></div>
+                                    <div class="btn">Total :<%= total= products.quantity*products.cart.price %></div> 
                                     
                                     </div>                             
                                    
                                     
                                    
-                                </div>
+                                
                                
                             </article>
                             <% }) %>

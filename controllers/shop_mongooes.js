@@ -47,7 +47,7 @@ exports.getOrders = async(req, res, next) => {
     res.render('shop/orders', {
       path: '/orders',
       pageTitle: 'Your Orders',
-    prods:order
+    prods:order.reverse()
     });
 }catch(err){
   console.log('error while gaating all oreder details')

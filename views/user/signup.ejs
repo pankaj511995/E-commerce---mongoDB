@@ -1,0 +1,28 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <form class="product-form" action="/user/signup" method="POST">
+            <div class="form-control">
+                <label for="title">name</label>
+                <input type="text" name="name" id="title" >
+            </div>
+            <div class="form-control">
+                <label for="imageUrl">email</label>
+                <input type="text" name="email" id="imageUrl" >
+            </div>
+            <div class="form-control">
+                <label for="price">password</label>
+                <input type="password" name="password" id="price">
+            </div>
+            <input type="radio" name="admin" id="totle" value="true">admin<br>
+            <input type="radio" name="admin" id="totle" value="false">notadmin <br>
+            <button class="btn" type="submit">Sign Up</button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

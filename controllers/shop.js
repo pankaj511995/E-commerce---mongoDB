@@ -81,7 +81,7 @@ exports.addcart=(req,res)=>{
      req.user.addToCart(product).then(result=>{
       res.redirect('/cart')
      })
-    })
+    }) 
 }
 exports.deletecart=(req,res)=>{
   req.user.delete(req.params.id)
